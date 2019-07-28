@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import withStyles, { WithStyles } from "react-jss";
+import RandomRadii from "./RandomRadii";
+import HoverFill from "./HoverFill";
+import { Link, Router } from "@reach/router";
+import Focus from "./Focus";
 
-const App: React.FC = () => {
+const styles = {
+  App: {
+    width: "100vw",
+    position: "relative"
+  },
+  links: {
+    display: "flex"
+  },
+  link: {
+    padding: "10px",
+    fontSize: "1.1em",
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline"
+    }
+  }
+};
+
+type Props = WithStyles<typeof styles>;
+
+const App: React.FC<Props> = ({ classes }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.App}>
+      <div className={classes.links}>
+        <Link to="/random-radii">
+          {" "}
+          <span className={classes.link}> Random Radii </span>
+        </Link>
+        <Link to="/hover-fill">
+          {" "}
+          <span className={classes.link}> Hover Fill </span>{" "}
+        </Link>
+        <Link to="/focus">
+          {" "}
+          <span className={classes.link}> Focus </span>{" "}
+        </Link>
+      </div>
+      <Router>
+        <RandomRadii path="/random-radii" />
+        <HoverFill path="/hover-fill" />
+        <Focus path="/focus" />
+      </Router>
     </div>
   );
-}
+};
 
-export default App;
+export default withStyles(styles)(App);
