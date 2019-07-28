@@ -6,11 +6,12 @@ const styles = {
     position: "absolute",
     left: "50%",
     top: "50%",
-    transition: "width 1s, height 1s, margin 1s",
+    transition: "width 1s, height 1s, margin 1s, background-color 0.5s",
     marginLeft: (props: Props) => `-${props.radius}vh`,
     marginTop: (props: Props) => `-${props.radius}vh`,
     width: (props: Props) => `${props.radius * 2}vh`,
     height: (props: Props) => `${props.radius * 2}vh`,
+    transform: (props: Props) => props.translate,
     borderRadius: "50%",
     backgroundColor: (props: Props) => props.color,
     display: "flex",
@@ -22,6 +23,7 @@ const styles = {
 interface Props extends WithStyles<typeof styles> {
   color: string;
   radius: number;
+  translate?: string;
   children?: ReactNode;
   handleMouseEnter?: (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => void;
   handleMouseLeave?: (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => void;

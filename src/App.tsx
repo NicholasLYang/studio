@@ -4,6 +4,8 @@ import RandomRadii from "./RandomRadii";
 import HoverFill from "./HoverFill";
 import { Link, Router } from "@reach/router";
 import Focus from "./Focus";
+import CircleOfCircles from "./CircleOfCircles";
+import HomePage from "./HomePage";
 
 const styles = {
   App: {
@@ -11,7 +13,8 @@ const styles = {
     position: "relative"
   },
   links: {
-    display: "flex"
+    display: "flex",
+    padding: "20px"
   },
   link: {
     padding: "10px",
@@ -41,11 +44,17 @@ const App: React.FC<Props> = ({ classes }) => {
           {" "}
           <span className={classes.link}> Focus </span>{" "}
         </Link>
+        <Link to="/circle-of-circles">
+          {" "}
+          <span className={classes.link}> Circle of Circles </span>{" "}
+        </Link>
       </div>
       <Router>
+        <HomePage path="/" />
         <RandomRadii path="/random-radii" />
         <HoverFill path="/hover-fill" />
         <Focus path="/focus" />
+        <CircleOfCircles path="/circle-of-circles" />
       </Router>
     </div>
   );
