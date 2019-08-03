@@ -12,6 +12,7 @@ const styles = {
     width: (props: Props) => `${props.radius * 2}vh`,
     height: (props: Props) => `${props.radius * 2}vh`,
     transform: (props: Props) => props.translate,
+    zIndex: (props: Props) => props.zIndex,
     borderRadius: "50%",
     backgroundColor: (props: Props) => props.color,
     display: "flex",
@@ -23,8 +24,10 @@ const styles = {
 interface Props extends WithStyles<typeof styles> {
   color: string;
   radius: number;
+  zIndex?: string;
   translate?: string;
   children?: ReactNode;
+  className?: string;
   handleMouseEnter?: (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => void;
   handleMouseLeave?: (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
@@ -33,13 +36,14 @@ const Circle: React.FC<Props> = ({
   handleMouseEnter,
   handleMouseLeave,
   classes,
+  className,
   children
 }) => {
   return (
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={classes.Circle}
+      className={className ? `${classes.Circle} ${className}` : classes.Circle}
     >
       {children}
     </div>

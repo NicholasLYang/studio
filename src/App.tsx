@@ -6,6 +6,7 @@ import { Link, Router } from "@reach/router";
 import Focus from "./Focus";
 import CircleOfCircles from "./CircleOfCircles";
 import HomePage from "./HomePage";
+import TileGrid from "./TileGrid";
 
 const styles = {
   App: {
@@ -48,6 +49,10 @@ const App: React.FC<Props> = ({ classes }) => {
           {" "}
           <span className={classes.link}> Circle of Circles </span>{" "}
         </Link>
+        <Link to="/tile-grid">
+          {" "}
+          <span className={classes.link}> Tile Grid </span>{" "}
+        </Link>
       </div>
       <Router>
         <HomePage path="/" />
@@ -55,6 +60,7 @@ const App: React.FC<Props> = ({ classes }) => {
         <HoverFill path="/hover-fill" />
         <Focus path="/focus" />
         <CircleOfCircles path="/circle-of-circles" />
+        <TileGrid path="/tile-grid" />
       </Router>
     </div>
   );

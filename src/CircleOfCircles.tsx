@@ -3,6 +3,7 @@ import Circle from "./Circle";
 import { RouteComponentProps } from "@reach/router";
 import withStyles, { WithStyles } from "react-jss";
 import chroma, { Color } from "chroma-js";
+import Button from "./Button";
 
 const styles = {
   CircleOfCircles: {
@@ -18,6 +19,12 @@ const styles = {
     fontSize: "1.1rem",
     margin: "10px",
     transition: "background-color 0.25s, filter 0.25s"
+  },
+  regularCircle: {
+    zIndex: "100"
+  },
+  highlightedCircle: {
+    zIndex: "99"
   },
   rainbowButton: {
     background:
@@ -87,6 +94,7 @@ const makeCircles = (
         radius={5}
         handleMouseEnter={() => setColorOffset(i)}
         color={color.hex()}
+        zIndex={colorOffset === i ? "99" : "100"}
         translate={`translate(${xOffset}vw, ${yOffset}vw)`}
       />
     );
@@ -161,18 +169,18 @@ const CircleOfCircles: React.FunctionComponent<
       }}
     >
       <div>
-        <button
-          className={`${classes.button} ${classes.monochromeButton}`}
+        <Button
+          className={classes.monochromeButton}
           onClick={() => setColorScheme(ColorScheme.Monochrome)}
         >
           MONOCHROME
-        </button>
-        <button
-          className={`${classes.button} ${classes.rainbowButton}`}
+        </Button>
+        <Button
+          className={classes.rainbowButton}
           onClick={() => setColorScheme(ColorScheme.Rainbow)}
         >
           RAINBOW
-        </button>
+        </Button>
       </div>
       {circles}
     </div>
