@@ -34,6 +34,13 @@ const styles = {
       filter: "brightness(80%)"
     }
   },
+  flame: {
+    background: "linear-gradient(to right, red, orange, yellow)",
+    "&:hover": {
+      filter: "brightness(80%)"
+    },
+    color: "black"
+  },
   monochromeButton: {
     backgroundColor: "white",
     "&:hover": {
@@ -53,7 +60,8 @@ enum ColorDirection {
 
 enum ColorScheme {
   Monochrome,
-  Rainbow
+  Rainbow,
+  RedYellow
 }
 
 const COLORS_COUNT = 64;
@@ -75,6 +83,9 @@ const rainbow = chroma
     "red"
   ])
   .colors(COLORS_COUNT);
+const redYellow = chroma
+  .scale(["yellow", "red", "yellow"])
+  .colors(COLORS_COUNT);
 
 type GetNextColor = (i: number, previousColor: Color) => Color;
 
@@ -92,7 +103,9 @@ const makeCircles = (
     circles.push(
       <Circle
         radius={5}
-        handleMouseEnter={() => setColorOffset(i)}
+        handleMouseEnter={() => {
+          Math.abs(colorOffset - i) > 3 && setColorOffset(i);
+        }}
         color={color.hex()}
         zIndex={colorOffset === i ? "99" : "100"}
         translate={`translate(${xOffset}vw, ${yOffset}vw)`}
@@ -128,6 +141,21 @@ const makeMonochromeCircles = (
   );
 };
 
+const makeRedYellowCircles = (
+  colorOffset: number,
+  setColorOffset: (n: number) => void
+): ReactNodeArray => {
+  const getNextColor = (i: number) => {
+    return chroma(redYellow[(i - colorOffset) % COLORS_COUNT]);
+  };
+  return makeCircles(
+    colorOffset,
+    setColorOffset,
+    chroma(redYellow[0]),
+    getNextColor
+  );
+};
+
 const makeRainbowCircles = (
   colorOffset: number,
   setColorOffset: (n: number) => void
@@ -144,7 +172,8 @@ const makeRainbowCircles = (
 };
 const colorSchemeFunctions = {
   [ColorScheme.Monochrome]: makeMonochromeCircles,
-  [ColorScheme.Rainbow]: makeRainbowCircles
+  [ColorScheme.Rainbow]: makeRainbowCircles,
+  [ColorScheme.RedYellow]: makeRedYellowCircles
 };
 
 const CircleOfCircles: React.FunctionComponent<
@@ -180,6 +209,12 @@ const CircleOfCircles: React.FunctionComponent<
           onClick={() => setColorScheme(ColorScheme.Rainbow)}
         >
           RAINBOW
+        </Button>
+        <Button
+          className={classes.flame}
+          onClick={() => setColorScheme(ColorScheme.RedYellow)}
+        >
+          FLAME
         </Button>
       </div>
       {circles}

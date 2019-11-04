@@ -4,6 +4,9 @@ import { RouteComponentProps } from "@reach/router";
 import chroma from "chroma-js";
 import Button from "./Button";
 
+// Number of tiles in a row
+const TILE_ROW_COUNT = 16;
+
 const styles = {
   TileGrid: {
     display: "flex",
@@ -16,14 +19,14 @@ const styles = {
     display: "grid",
     width: "80vh",
     height: "80vh",
-    gridTemplateColumns: "repeat(8, 1fr)",
+    gridTemplateColumns: `repeat(${TILE_ROW_COUNT}, 1fr)`,
     gridGap: "5px"
   },
   gridElement: {
     transition: "background-color 0.2s",
     borderRadius: "20px",
-    width: "8vh",
-    height: "8vh"
+    width: "4vh",
+    height: "4vh"
   },
   buttons: {
     display: "flex"
@@ -35,27 +38,31 @@ interface Point {
   y: number;
 }
 
-const calculateCoords = (i: number): Point => {
-  const y = i / 8;
-  const x = i % 8;
+const calcCoords = (i: number): Point => {
+  const y = i / TILE_ROW_COUNT;
+  const x = i % TILE_ROW_COUNT;
   return { x, y };
 };
 
-const calculateDist = (u: Point, v: Point): number => {
+const calcDist = (u: Point, v: Point): number => {
   const delta_x = u.x - v.x;
   const delta_y = u.y - v.y;
   return Math.hypot(delta_x, delta_y);
 };
 
 enum SelectionMode {
-  Mouse,
-  Random
+  Hover,
+  Random,
+  Click
 }
 
 const TileGrid: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps
 > = ({ classes }) => {
-  const [activeTile, setActiveTile] = useState({ x: 2, y: 2 });
+  const [activeTile, setActiveTile] = useState({
+    x: TILE_ROW_COUNT / 2,
+    y: TILE_ROW_COUNT / 2
+  });
   const [selectionMode, setSelectionMode] = useState(SelectionMode.Random);
   useEffect(() => {
     const id = setInterval(() => {
@@ -63,15 +70,21 @@ const TileGrid: React.FunctionComponent<
         const x = Math.max(
           0,
           Math.min(
-            15,
-            Math.floor(activeTile.x + (Math.random() - activeTile.x / 15) * 1.5)
+            TILE_ROW_COUNT - 1,
+            Math.floor(
+              activeTile.x +
+                (Math.random() - activeTile.x / (TILE_ROW_COUNT - 1)) * 1.5
+            )
           )
         );
         const y = Math.max(
           0,
           Math.min(
-            15,
-            Math.floor(activeTile.y + (Math.random() - activeTile.y / 15) * 1.5)
+            TILE_ROW_COUNT - 1,
+            Math.floor(
+              activeTile.y +
+                (Math.random() - activeTile.y / (TILE_ROW_COUNT - 1)) * 1.5
+            )
           )
         );
         setActiveTile({ x, y });
@@ -83,17 +96,24 @@ const TileGrid: React.FunctionComponent<
   });
   const gridElements = [];
   const scale = chroma.scale(["red", "yellow"]);
-  for (let i = 0; i < 64; i++) {
-    const dist = calculateDist(activeTile, calculateCoords(i));
-    const colorScale = (dist + Math.random()) / 5;
+  for (let i = 0; i < TILE_ROW_COUNT * TILE_ROW_COUNT; i++) {
+    const dist = calcDist(activeTile, calcCoords(i));
+    const colorScale = (dist + Math.random()) / 8;
     const handleMouseEnter =
-      selectionMode === SelectionMode.Mouse
-        ? () => setActiveTile(calculateCoords(i))
+      selectionMode === SelectionMode.Hover
+        ? () => setActiveTile(calcCoords(i))
+        : undefined;
+    const handleClick =
+      selectionMode === SelectionMode.Click
+        ? () => setActiveTile(calcCoords(i))
         : undefined;
     gridElements.push(
       <div
         onMouseEnter={handleMouseEnter}
-        style={{ backgroundColor: scale(colorScale).hex() }}
+        onClick={handleClick}
+        style={{
+          backgroundColor: scale(colorScale).hex()
+        }}
         className={classes.gridElement}
       />
     );
@@ -103,16 +123,16 @@ const TileGrid: React.FunctionComponent<
       <div className={classes.buttons}>
         <Button
           style={
-            selectionMode === SelectionMode.Mouse
+            selectionMode === SelectionMode.Hover
               ? { backgroundColor: "orangered", color: "#f9f9f9" }
               : {}
           }
           onClick={() => {
-            setSelectionMode(SelectionMode.Mouse);
-            setActiveTile({ x: 4, y: 4 });
+            setSelectionMode(SelectionMode.Hover);
+            setActiveTile({ x: TILE_ROW_COUNT / 2, y: TILE_ROW_COUNT / 2 });
           }}
         >
-          Mouse
+          Hover
         </Button>
         <Button
           style={
@@ -123,6 +143,16 @@ const TileGrid: React.FunctionComponent<
           onClick={() => setSelectionMode(SelectionMode.Random)}
         >
           Random
+        </Button>
+        <Button
+          style={
+            selectionMode === SelectionMode.Click
+              ? { backgroundColor: "orangered", color: "#f9f9f9" }
+              : {}
+          }
+          onClick={() => setSelectionMode(SelectionMode.Click)}
+        >
+          Click
         </Button>
       </div>
       <div className={classes.grid}>{gridElements}</div>

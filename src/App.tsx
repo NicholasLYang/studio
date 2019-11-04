@@ -53,6 +53,10 @@ const App: React.FC<Props> = ({ classes }) => {
           {" "}
           <span className={classes.link}> Tile Grid </span>{" "}
         </Link>
+        <Link to="/transform3d">
+          {" "}
+          <span className={classes.link}> Transform 3D </span>{" "}
+        </Link>
       </div>
       <Router>
         <HomePage path="/" />
