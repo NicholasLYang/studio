@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from "react";
-import withStyles, { WithStyles } from "react-jss";
+import withStyles, { WithStylesProps } from "react-jss";
 import chroma from "chroma-js";
 
 const styles = {
@@ -18,7 +18,7 @@ const styles = {
   }
 };
 
-type Props = WithStyles<typeof styles> &
+type Props = WithStylesProps<typeof styles> &
   ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FunctionComponent<Props> = ({

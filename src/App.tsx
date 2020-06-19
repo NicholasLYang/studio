@@ -1,5 +1,5 @@
 import React from "react";
-import withStyles, { WithStyles } from "react-jss";
+import withStyles, { WithStylesProps } from "react-jss";
 import RandomRadii from "./RandomRadii";
 import HoverFill from "./HoverFill";
 import { Link, Router } from "@reach/router";
@@ -25,9 +25,9 @@ const styles = {
       textDecoration: "underline"
     }
   }
-};
+} as const;
 
-type Props = WithStyles<typeof styles>;
+type Props = WithStylesProps<typeof styles>;
 
 const App: React.FC<Props> = ({ classes }) => {
   return (
@@ -52,10 +52,6 @@ const App: React.FC<Props> = ({ classes }) => {
         <Link to="/tile-grid">
           {" "}
           <span className={classes.link}> Tile Grid </span>{" "}
-        </Link>
-        <Link to="/transform3d">
-          {" "}
-          <span className={classes.link}> Transform 3D </span>{" "}
         </Link>
       </div>
       <Router>

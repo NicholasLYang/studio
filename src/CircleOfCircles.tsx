@@ -1,9 +1,9 @@
 import React, { ReactNodeArray, useState } from "react";
 import Circle from "./Circle";
 import { RouteComponentProps } from "@reach/router";
-import withStyles, { WithStyles } from "react-jss";
 import chroma, { Color } from "chroma-js";
 import Button from "./Button";
+import { createUseStyles } from "react-jss";
 
 const styles = {
   CircleOfCircles: {
@@ -49,7 +49,9 @@ const styles = {
         .hex()
     }
   }
-};
+} as const;
+
+const useStyles = createUseStyles(styles);
 
 const CIRCLES_COUNT = 64;
 const COLOR_DELTA = 0.25;
@@ -176,9 +178,8 @@ const colorSchemeFunctions = {
   [ColorScheme.RedYellow]: makeRedYellowCircles
 };
 
-const CircleOfCircles: React.FunctionComponent<
-  RouteComponentProps & WithStyles<typeof styles>
-> = ({ classes }) => {
+const CircleOfCircles: React.FunctionComponent<RouteComponentProps> = () => {
+  const classes = useStyles();
   const [colorScheme, setColorScheme] = useState(ColorScheme.Monochrome);
   const [colorOffset, setColorOffset] = useState(0);
   const circles = colorSchemeFunctions[colorScheme](
@@ -222,4 +223,4 @@ const CircleOfCircles: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(CircleOfCircles);
+export default CircleOfCircles;

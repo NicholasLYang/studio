@@ -1,27 +1,28 @@
 import React, { MouseEvent as ReactMouseEvent, ReactNode } from "react";
-import withStyles, { WithStyles } from "react-jss";
+import { createUseStyles } from "react-jss";
 
-const styles = {
-  Circle: {
+const useStyles = createUseStyles({
+  //@ts-ignore
+  Circle: (props: any) => ({
     position: "absolute",
     left: "50%",
     top: "50%",
     transition: "width 1s, height 1s, margin 1s, background-color 0.5s",
-    marginLeft: (props: Props) => `-${props.radius}vh`,
-    marginTop: (props: Props) => `-${props.radius}vh`,
-    width: (props: Props) => `${props.radius * 2}vh`,
-    height: (props: Props) => `${props.radius * 2}vh`,
-    transform: (props: Props) => props.translate,
-    zIndex: (props: Props) => props.zIndex,
+    marginLeft: `-${props.radius}vh`,
+    marginTop: `-${props.radius}vh`,
+    width: `${props.radius * 2}vh`,
+    height: `${props.radius * 2}vh`,
+    transform: props.translate,
+    zIndex: props.zIndex,
     borderRadius: "50%",
-    backgroundColor: (props: Props) => props.color,
+    backgroundColor: props.color,
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
-  }
-};
+  })
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   color: string;
   radius: number;
   zIndex?: string;
@@ -35,10 +36,10 @@ interface Props extends WithStyles<typeof styles> {
 const Circle: React.FC<Props> = ({
   handleMouseEnter,
   handleMouseLeave,
-  classes,
   className,
   children
 }) => {
+  const classes = useStyles();
   return (
     <div
       onMouseEnter={handleMouseEnter}
@@ -50,4 +51,4 @@ const Circle: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(Circle);
+export default Circle;
