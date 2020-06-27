@@ -37,9 +37,10 @@ const Circle: React.FC<Props> = ({
   handleMouseEnter,
   handleMouseLeave,
   className,
-  children
+  children,
+  ...props
 }) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   return (
     <div
       onMouseEnter={handleMouseEnter}

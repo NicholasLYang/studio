@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import withStyles, { WithStyles } from "react-jss";
 import { RouteComponentProps } from "@reach/router";
 import chroma from "chroma-js";
 import Button from "./Button";
+import { createUseStyles } from "react-jss";
 
 // Number of tiles in a row
 const TILE_ROW_COUNT = 16;
@@ -31,7 +31,8 @@ const styles = {
   buttons: {
     display: "flex"
   }
-};
+} as const;
+const useStyles = createUseStyles(styles);
 
 interface Point {
   x: number;
@@ -56,9 +57,8 @@ enum SelectionMode {
   Click
 }
 
-const TileGrid: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps
-> = ({ classes }) => {
+const TileGrid: React.FunctionComponent<RouteComponentProps> = () => {
+  const classes = useStyles();
   const [activeTile, setActiveTile] = useState({
     x: TILE_ROW_COUNT / 2,
     y: TILE_ROW_COUNT / 2
@@ -88,8 +88,6 @@ const TileGrid: React.FunctionComponent<
           )
         );
         setActiveTile({ x, y });
-      } else {
-        setActiveTile({ x: activeTile.x, y: activeTile.y });
       }
     }, 500);
     return () => clearInterval(id);
@@ -160,4 +158,4 @@ const TileGrid: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(TileGrid);
+export default TileGrid;

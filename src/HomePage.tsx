@@ -1,21 +1,21 @@
 import React from "react";
 import { RouteComponentProps } from "@reach/router";
-import withStyles, { WithStyles } from "react-jss";
+import { createUseStyles } from "react-jss";
 
 const styles = {
   HomePage: {
     padding: "20px"
   }
-};
-const HomePage: React.FunctionComponent<
-  RouteComponentProps & WithStyles<typeof styles>
-> = ({ classes }) => {
+} as const;
+const useStyles = createUseStyles(styles);
+
+const HomePage: React.FunctionComponent<RouteComponentProps> = () => {
+  const classes = useStyles();
   return (
     <div className={classes.HomePage}>
-      {" "}
       Click on the links to select a design
     </div>
   );
 };
 
-export default withStyles(styles)(HomePage);
+export default HomePage;

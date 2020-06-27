@@ -1,5 +1,7 @@
 import React from "react";
 
 const HalfCircles = () => {
-  return <div className={classes.HalfCircles}></div>;
+  return <div></div>;
 };
+
+export default HalfCircles;

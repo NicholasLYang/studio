@@ -21,10 +21,10 @@ const styles = {
     transition: "background-color 0.25s, filter 0.25s"
   },
   regularCircle: {
-    zIndex: "100"
+    zIndex: 100
   },
   highlightedCircle: {
-    zIndex: "99"
+    zIndex: 99
   },
   rainbowButton: {
     background:

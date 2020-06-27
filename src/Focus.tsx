@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Circle from "./Circle";
 import { RouteComponentProps } from "@reach/router";
-import withStyles, { WithStyles } from "react-jss";
+import { createUseStyles } from "react-jss";
 
 const styles = {
   Focus: {
@@ -12,10 +12,11 @@ const styles = {
   focusText: {
     transition: "font-size 1s"
   }
-};
-const Focus: React.FunctionComponent<
-  RouteComponentProps & WithStyles<typeof styles>
-> = ({ classes }) => {
+} as const;
+const useStyles = createUseStyles(styles);
+
+const Focus: React.FunctionComponent<RouteComponentProps> = () => {
+  const classes = useStyles();
   const [isFocused, setFocused] = useState(false);
   useEffect(() => {
     const id = setInterval(() => {
@@ -51,4 +52,4 @@ const Focus: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(Focus);
+export default Focus;
